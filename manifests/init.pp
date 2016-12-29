@@ -74,6 +74,9 @@
 # $version::                      Version of Candlepin to install
 #                                 Defaults to present
 #
+# $manage_wget::                  Boolean on whether or not to manage wget package
+#                                 Defaults to true
+#
 # $wget_version::                 Passed to the wget package.
 #                                 Defaults to present
 #
@@ -146,6 +149,7 @@ class candlepin (
   $qpid_ssl_port = $candlepin::params::qpid_ssl_port,
 
   $version = $candlepin::params::version,
+  $manage_wget = $candlepin::params::manage_wget,
   $wget_version = $candlepin::params::wget_version,
   $run_init = $candlepin::params::run_init,
   $adapter_module = $candlepin::params::adapter_module,

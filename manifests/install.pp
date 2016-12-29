@@ -4,5 +4,7 @@ class candlepin::install {
     ensure => $candlepin::version,
   }
 
-  ensure_packages(['wget'], { ensure => $candlepin::wget_version, })
+  if $candlepin::manage_wget {
+    ensure_packages(['wget'], { ensure => $candlepin::wget_version, })
+  }
 }

@@ -61,6 +61,7 @@ class candlepin::params {
   $qpid_ssl_port = 5671
 
   $version = 'present'
+  $manage_wget = true
   $wget_version = 'present'
   $run_init = true
   $adapter_module = undef
