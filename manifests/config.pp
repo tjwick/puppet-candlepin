@@ -1,9 +1,11 @@
 # Configuration for Candlepin
 class candlepin::config {
 
-  user { 'tomcat':
-    ensure => present,
-    groups => $candlepin::user_groups,
+  if $candlepin::manage_tomcat_user {
+    user { 'tomcat':
+      ensure => present,
+      groups => $candlepin::user_groups,
+    }
   }
 
   concat::fragment { 'General Config':

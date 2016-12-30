@@ -74,6 +74,9 @@
 # $version::                      Version of Candlepin to install
 #                                 Defaults to present
 #
+# $manage_tomcat_user::           Boolean on whether or not to manage the tomcat user
+#                                 Defaults to true
+#
 # $manage_wget::                  Boolean on whether or not to manage wget package
 #                                 Defaults to true
 #
@@ -85,6 +88,18 @@
 # $adapter_module::               Candlepin adapter implementations to inject into the java runtime
 #
 # $amq_enable::                   Boolean indicating if amq should be enabled and configured
+#
+# $amq_basicauth::                Boolean indicating if amq should be be auth'd with user/pass combo
+#                                 Defaults to false
+#
+# $amq_username::                 String to indicate amq username if amq_basicauth is set
+#                                 Defaults to 'candlepin'
+#
+# $amq_password::                 String to indicate amq pasword if amq_basicauth is set
+#                                 Defaults to 'candlepin'
+#
+# $amq_vhost::                    String to indicate amq vhost to use in the queue
+#                                 Defaults to 'candlepin'
 #
 # $amqp_keystore::                Location of the amqp keystore to use
 #
@@ -148,12 +163,18 @@ class candlepin (
   $qpid_hostname = $candlepin::params::qpid_hostname,
   $qpid_ssl_port = $candlepin::params::qpid_ssl_port,
 
+  $manage_tomcat_user = $candlepin::params::manage_tomcat_user,
+
   $version = $candlepin::params::version,
   $manage_wget = $candlepin::params::manage_wget,
   $wget_version = $candlepin::params::wget_version,
   $run_init = $candlepin::params::run_init,
   $adapter_module = $candlepin::params::adapter_module,
   $amq_enable = $candlepin::params::amq_enable,
+  $amq_basicauth = $candlepin::params::amq_basicauth,
+  $amq_username = $candlepin::params::amq_username,
+  $amq_password = $candlepin::params::amq_password,
+  $amq_vhost = $candlepin::params::amq_vhost,
   $enable_hbm2ddl_validate = $candlepin::params::enable_hbm2ddl_validate,
 
   $enable_basic_auth = $candlepin::params::enable_basic_auth,
@@ -184,7 +205,11 @@ class candlepin (
 
   $weburl = "https://${::fqdn}/${candlepin::deployment_url}/distributors?uuid="
   $apiurl = "https://${::fqdn}/${candlepin::deployment_url}/api/distributors/"
-  $amqpurl = "tcp://${qpid_hostname}:${qpid_ssl_port}?ssl='true'&ssl_cert_alias='amqp-client'"
+  if $amq_basicauth {
+    $amqpurl = "tcp://${amq_username}:${amq_password}@${qpid_hostname}:${qpid_ssl_port}/${amq_vhost}"
+  } else {
+    $amqpurl = "tcp://${qpid_hostname}:${qpid_ssl_port}?ssl='true'&ssl_cert_alias='amqp-client'"
+  }
 
   $candlepin_conf_file = '/etc/candlepin/candlepin.conf'
 
