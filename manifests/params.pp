@@ -34,10 +34,6 @@ class candlepin::params {
   $amqp_truststore_password = undef
   $amqp_keystore = '/etc/candlepin/certs/amqp/candlepin.jks'
   $amqp_truststore = '/etc/candlepin/certs/amqp/candlepin.truststore'
-  $amq_basicauth = false
-  $amq_username = 'candlepin'
-  $amq_password = 'candlepin'
-  $amq_vhost = 'candlepin'
 
   # where to store output from cpsetup execution
   $log_dir  = '/var/log/candlepin'
